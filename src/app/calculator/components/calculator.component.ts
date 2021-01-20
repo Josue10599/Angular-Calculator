@@ -48,6 +48,7 @@ export class CalculatorComponent implements OnInit {
     if (this.value2.length > 0) {
       this.result = this.calculatorService.calculate(parseFloat(this.value1), parseFloat(this.value2), this.valueOperation).toString();
       this.value1 = this.result.toString();
+      this.valueOperation = value;
       this.value2 = '';
     }
   }
@@ -82,11 +83,17 @@ export class CalculatorComponent implements OnInit {
    */
   private concatNumber(currentValue: string, concatValue: string): string {
     if (concatValue == '0' && currentValue.length == 0) currentValue = '';
-    if (concatValue == '.' && currentValue == '') return '0.';
-    if (concatValue == '.' && currentValue.indexOf('.') > -1) return currentValue;
+    if (concatValue == '.') {
+      if (currentValue == '') return '0.';
+      if (currentValue.indexOf('.') > -1) return currentValue;
+    }
     return currentValue + concatValue;
   }
 
+  /**
+   * Apresenta o valor atual.
+   * @returns Valor atual da operação.
+   */
   get displayValue(): string {
     if (this.value2.length > 0) return this.value2
     else if (this.value1.length > 0) return this.value1;
